@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Stage1') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+		        stage('Stage2') {
+            steps {
+                echo 'Synchronised directory'
+				git branch: 'main', url: 'https://github.com/Rahulsaha165/AKSRepo.git'
+            }
+        }
+		        stage('Stage3') {
+            steps {
+                sh '''
+                echo 'Check Files in Workspace'
+				pwd
+                ls -l /var/lib/jenkins/workspace/AKS/
+				sudo docker build -t app1 .
+                '''
+            }
+        }
+		        stage('Stage4') {
+            steps {
+                sh '''
+				echo 'list docker image'
+				sudo docker images
+            }
+        }
+    }
+}
